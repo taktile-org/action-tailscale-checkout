@@ -1,13 +1,20 @@
 name: 'Tailscale and Checkout'
-description: 'This action checks out the repository and sets up Tailscale for use in GitHub Actions.'
+description: 'This action checks out the repository and sets up Tailscale for use in GitHub Actions. It requires Tailscale OAuth credentials to be provided as input parameters.'
+inputs:
+  tailscale-oauth-client-id:
+    description: 'Tailscale OAuth client ID'
+    required: true
+  tailscale-oauth-client-secret:
+    description: 'Tailscale OAuth client secret'
+    required: true
 runs:
   using: "composite"
   steps:
       - name: Tailscale
         uses: tailscale/github-action@v3
         with:
-          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
+          oauth-client-id: ${{ inputs.tailscale-oauth-client-id }}
+          oauth-secret: ${{ inputs.tailscale-oauth-client-secret }}
           tags: tag:ci
           use-cache: 'true'
   
