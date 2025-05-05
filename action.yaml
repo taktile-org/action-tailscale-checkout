@@ -19,6 +19,7 @@ runs:
           use-cache: 'true'
   
       - name: Wait for GitHub and AWS to Resolve
+        shell: bash
         run: |
           echo "Waiting for GitHub and AWS to resolve the Tailscale IP address..."
           export TARGET_URLS=(
