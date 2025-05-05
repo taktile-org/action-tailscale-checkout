@@ -1,0 +1,42 @@
+name: 'Tailscale and Checkout'
+description: 'This action checks out the repository and sets up Tailscale for use in GitHub Actions.'
+runs:
+  using: "composite"
+  steps:
+      - name: Tailscale
+        uses: tailscale/github-action@v3
+        with:
+          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
+          oauth-secret: ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
+          tags: tag:ci
+          use-cache: 'true'
+  
+      - name: Wait for GitHub and AWS to Resolve
+        run: |
+          echo "Waiting for GitHub and AWS to resolve the Tailscale IP address..."
+          export TARGET_URLS=(
+            "https://github.com"
+            "https://sts.eu-central-1.amazonaws.com"
+          )
+          export MAX_RETRIES=100
+          export SLEEP_DURATION=2
+  
+          export RETRY_COUNT=0
+  
+          for TARGET_URL in "${TARGET_URLS[@]}"; do
+              echo "Checking if $TARGET_URL is reachable..."
+              until curl --output /dev/null --silent --head --fail $TARGET_URL; do
+                  if [ $RETRY_COUNT -gt $MAX_RETRIES ]; then
+                      echo "Error: $TARGET_URL is not reachable after $MAX_RETRIES attempts."
+                      exit 1
+                  fi
+  
+                  echo "Retrying in $SLEEP_DURATION seconds..."
+                  sleep $SLEEP_DURATION
+                  RETRY_COUNT=$((RETRY_COUNT + 1))
+              done
+              echo "$TARGET_URL is reachable."
+          done
+  
+      - name: Checkout
+        uses: actions/checkout@v4
