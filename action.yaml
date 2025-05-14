@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
       - name: Tailscale
-        uses: taktile-org/tailscale-github-action@master
+        uses: taktile-org/tailscale-github-action@main
         with: |
           oauth-client-id: ${{ inputs.tailscale-oauth-client-id }}
           oauth-secret: ${{ inputs.tailscale-oauth-client-secret }}
