@@ -11,7 +11,7 @@ runs:
   using: "composite"
   steps:
       - name: Tailscale
-        uses: taktile-org/wretry.action@master
+        uses: Wandalen/wretry.action@v3.8.0
         with:
           action: tailscale/github-action@v3
           with: |
