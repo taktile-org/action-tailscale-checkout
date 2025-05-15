@@ -24,10 +24,10 @@ runs:
         env:
           SOPS_VERSION: ${{ inputs.sops-version }}
         run: |
-          mkdir -p ${GITHUB_WORKSPACE}/bin
-          echo ${GITHUB_WORKSPACE}/bin >> $GITHUB_PATH
-          curl  --max-time 60 --retry 2 --retry-all-errors --retry-delay 8 -L https://github.com/mozilla/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux -o ${GITHUB_WORKSPACE}/bin/sops
-          chmod +x ${GITHUB_WORKSPACE}/bin/sops
+          mkdir -p ${HOME}/.local/bin
+          echo ${HOME}/.local/bin >> $GITHUB_PATH
+          curl  --max-time 60 --retry 2 --retry-all-errors --retry-delay 8 -L https://github.com/mozilla/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux -o ${HOME}/.local/bin/sops
+          chmod +x ${HOME}/.local/bin/sops
 
       - name: Tailscale
         uses: taktile-org/tailscale-github-action@main
