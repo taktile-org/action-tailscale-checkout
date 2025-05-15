@@ -19,6 +19,7 @@ runs:
   using: "composite"
   steps:
       - name: Install SOPS
+        shell: bash
         if: ${{ inputs.install-sops == 'true' }}
         env:
           SOPS_VERSION: ${{ inputs.sops-version }}
