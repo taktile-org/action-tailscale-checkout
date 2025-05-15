@@ -7,9 +7,27 @@ inputs:
   tailscale-oauth-client-secret:
     description: 'Tailscale OAuth client secret'
     required: true
+  install-sops:
+    description: 'Install SOPS'
+    required: false
+    default: 'true'
+  sops-version:
+    description: 'SOPS version to install'
+    required: false
+    default: '3.6.1'
 runs:
   using: "composite"
   steps:
+      - name: Install SOPS
+        if: ${{ inputs.install-sops == 'true' }}
+        env:
+          SOPS_VERSION: ${{ inputs.sops-version }}
+        run: |
+          mkdir -p ${GITHUB_WORKSPACE}/bin
+          echo ${GITHUB_WORKSPACE}/bin >> $GITHUB_PATH
+          curl  --max-time 60 --retry 2 --retry-all-errors --retry-delay 8 -L https://github.com/mozilla/sops/releases/download/v${SOPS_VERSION}/sops-v${SOPS_VERSION}.linux -o ${GITHUB_WORKSPACE}/bin/sops
+          chmod +x ${GITHUB_WORKSPACE}/bin/sops
+
       - name: Tailscale
         uses: taktile-org/tailscale-github-action@main
         with:
