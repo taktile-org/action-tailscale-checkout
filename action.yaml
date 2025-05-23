@@ -15,6 +15,10 @@ inputs:
     description: 'SOPS version to install'
     required: false
     default: '3.6.1'
+  fetch-depth:
+    description: 'Fetch depth for git checkout'
+    required: false
+    default: '1'
 runs:
   using: "composite"
   steps:
@@ -78,6 +82,8 @@ runs:
   
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ inputs.fetch-depth }}
 
       - name: Timestamp
         shell: bash
