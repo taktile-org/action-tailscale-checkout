@@ -53,6 +53,8 @@ runs:
             "https://github.com"
             "https://github.com/${GITHUB_REPOSITORY}"
             "https://sts.eu-central-1.amazonaws.com"
+            "https://sts.us-east-1.amazonaws.com"
+            "https://sts.us-east-2.amazonaws.com"
           )
           export MAX_RETRIES=100
           export SLEEP_DURATION=2
